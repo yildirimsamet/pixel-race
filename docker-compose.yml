@@ -1,0 +1,125 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: pixel-race-postgres
+    environment:
+      POSTGRES_DB: pixel_race
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mongodb:
+    image: mongo:7
+    container_name: pixel-race-mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: logger
+      MONGO_INITDB_ROOT_PASSWORD: logger_password
+    volumes:
+      - mongodb_logs:/data/db
+    ports:
+      - "27017:27017"
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+      target: development
+    container_name: pixel-race-backend
+    env_file:
+      - ./backend/.env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@postgres:5432/pixel_race
+      MONGODB_URL: mongodb://logger:logger_password@mongodb:27017/pixel_race_logs?authSource=admin
+      SOCKET_SERVER_URL: http://socket-server:3000
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+      - ./common:/app/common
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+  socket-server:
+    build:
+      context: .
+      dockerfile: socket-server/Dockerfile
+      target: development
+    container_name: pixel-race-socket
+    environment:
+      PORT: 3000
+      BACKEND_URL: http://backend:8000
+      CORS_ORIGIN: "*"
+      PROGRESS_UPDATE_INTERVAL: 100
+      RACE_CLEANUP_DELAY: 60000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    volumes:
+      - ./socket-server:/app
+      - ./common:/app/common
+      - /app/node_modules
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      target: development
+    container_name: pixel-race-frontend
+    env_file:
+      - ./frontend/.env
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8000
+      NEXT_PUBLIC_SOCKET_URL: http://localhost:3000
+      WATCHPACK_POLLING: "true"
+      CHOKIDAR_USEPOLLING: "true"
+      NODE_OPTIONS: "--max-old-space-size=4096"
+    ports:
+      - "3001:3001"
+    depends_on:
+      - backend
+      - socket-server
+    volumes:
+      - ./frontend:/app
+      - ./common:/app/common
+      - /app/node_modules
+      - /app/.next
+      - /app/.next/cache
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  mongodb_logs:

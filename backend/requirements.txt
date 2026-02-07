@@ -1,0 +1,43 @@
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+gunicorn==21.2.0
+requests==2.31.0
+sqlalchemy==2.0.25
+psycopg2-binary==2.9.9
+asyncpg==0.29.0
+alembic==1.13.1
+python-jose[cryptography]==3.3.0
+bcrypt==4.1.2
+passlib==1.7.4
+python-multipart==0.0.6
+pydantic==2.5.3
+pydantic-settings==2.1.0
+python-dotenv==1.0.0
+APScheduler==3.10.4
+
+# Solana wallet signature verification
+PyNaCl==1.5.0
+base58==2.1.1
+
+# Solana & NFT support (for production NFT minting)
+# Note: solana package requires httpx<0.24.0, so we use compatible version
+solana==0.30.2
+solders==0.18.1
+anchorpy==0.18.0
+httpx>=0.23.0,<0.24.0
+
+# IPFS storage via Filebase S3 API
+# aioboto3 13.3.0 → aiobotocore 2.16.0 → botocore >=1.35.74,<1.35.82
+aioboto3==13.3.0
+boto3==1.35.81
+botocore==1.35.81
+
+# SVG to PNG rendering for custom horse images
+cairosvg==2.7.1
+
+# MongoDB for logging
+motor==3.3.2
+pymongo==4.6.1
+
+# Email validation for feedback system
+email-validator==2.1.0

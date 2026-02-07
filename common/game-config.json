@@ -1,0 +1,184 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "Pixel Race - Shared game configuration for backend and frontend",
+
+  "pricing": {
+    "horse_purchase": {
+      "level_1": 0.03,
+      "level_2": 0.06,
+      "level_3": 0.12
+    },
+    "goodluck_token": 0.004,
+    "race_entry": {
+      "level_1": 0.008,
+      "level_2": 0.06,
+      "level_3": 0.12
+    },
+    "horse_care": {
+      "feed": 0.0004,
+      "rest": 0.0004,
+      "train": 0.0004
+    }
+  },
+
+  "race": {
+    "min_horses": {
+      "level_1": 6,
+      "level_2": 6,
+      "level_3": 6,
+      "level_1_1v1": 2,
+      "level_2_1v1": 2,
+      "level_3_1v1": 2
+    },
+    "max_horses": {
+      "level_1": 8,
+      "level_2": 8,
+      "level_3": 8,
+      "level_1_1v1": 2,
+      "level_2_1v1": 2,
+      "level_3_1v1": 2
+    },
+    "base_time_ms": {
+      "level_1": 30000,
+      "level_2": 20000,
+      "level_3": 15000
+    },
+    "reward_distribution": {
+      "first": 0.5,
+      "second": 0.25,
+      "third": 0.15
+    },
+    "reward_distribution_1v1": {
+      "first": 0.90,
+      "second": 0
+    },
+    "num_segments": 10,
+    "create_interval_minutes": 3,
+    "start_delay_minutes": 3
+  },
+
+  "horse_attributes": {
+    "age": {
+      "min": 1,
+      "max": 10
+    },
+    "weight": {
+      "min": 300,
+      "max": 1000
+    },
+    "determination": {
+      "min": 30,
+      "max": 70
+    },
+    "energy": {
+      "min": 0,
+      "max": 100
+    },
+    "satiety": {
+      "min": 0,
+      "max": 100
+    },
+    "bond": {
+      "min": 0,
+      "max": 100
+    },
+    "fame": {
+      "min": 0,
+      "max": 100
+    },
+    "instinct": {
+      "min": 0,
+      "max": 100
+    }
+  },
+
+  "optimal_stats": {
+    "age": {
+      "value": 4,
+      "max_penalty_ms": 2000
+    },
+    "weight": {
+      "value": 500,
+      "max_penalty_ms": 2000
+    },
+    "satiety": {
+      "value": 70,
+      "max_penalty_ms": 2000
+    },
+    "determination": {
+      "value": 100,
+      "max_penalty_ms": 2000
+    },
+    "bond": {
+      "value": 100,
+      "max_penalty_ms": 2000
+    },
+    "fame": {
+      "value": 100,
+      "max_penalty_ms": 2000
+    },
+    "instinct": {
+      "value": 100,
+      "max_penalty_ms": 2000
+    }
+  },
+
+  "race_logic": {
+    "segment_speed_variation": {
+      "min": 0.6,
+      "max": 1.4
+    },
+    "high_determination_threshold": 70,
+    "high_determination_boost_segment": 7,
+    "old_age_threshold": 8,
+    "old_age_energy_segment": 6,
+    "young_age_threshold": 3,
+    "young_age_boost_start_segment": 4,
+    "young_age_boost_end_segment": 7,
+    "heavy_weight_threshold": 700,
+    "uphill_start_segment": 3,
+    "uphill_end_segment": 5
+  },
+
+  "training": {
+    "success_chance": 0.35,
+    "determination_increase": 10
+  },
+
+  "goodluck_token": {
+    "max_purchase_quantity": 100,
+    "race_boost_description": "Eliminates negative speed variations - only positive buffs apply"
+  },
+
+  "scheduler": {
+    "stuck_race_timeout_minutes": 3,
+    "max_kept_old_races": 100
+  },
+
+  "security": {
+    "rate_limit": {
+      "enabled": true,
+      "requests_per_minute": 10
+    },
+    "min_treasury_balance_sol": 0.05,
+    "access_token_expire_minutes": 10080
+  },
+
+  "socket_server": {
+    "port": 3000,
+    "progress_update_interval_ms": 100,
+    "race_cleanup_delay_ms": 60000
+  },
+
+  "development": {
+    "cors_origin": "*",
+    "log_level": "INFO"
+  },
+
+  "solana": {
+    "priority_fee_microlamports": {
+      "devnet": 1000,
+      "mainnet": 5000
+    }
+  }
+}
