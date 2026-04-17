@@ -43,7 +43,7 @@ services:
     volumes:
       - ./common:/app/common:ro
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8100:8000"
     depends_on:
       postgres:
         condition: service_healthy
@@ -80,7 +80,7 @@ services:
     volumes:
       - ./common:/app/common:ro
     ports:
-      - "3000:3000"
+      - "127.0.0.1:3100:3000"
     depends_on:
       - backend
     restart: always
@@ -117,7 +117,7 @@ services:
     volumes:
       - ./common:/app/common:ro
     ports:
-      - "3001:3001"
+      - "127.0.0.1:3101:3001"
     depends_on:
       - backend
       - socket-server
