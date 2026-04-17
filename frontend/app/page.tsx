@@ -9,6 +9,7 @@ import FeaturedRace from '@/components/FeaturedRace';
 import SectionHeader from '@/components/SectionHeader';
 import EmptyState from '@/components/EmptyState';
 import Loader from '@/components/Loader';
+import HolderPerksTeaser from '@/components/token/HolderPerksTeaser';
 import { GiHorseHead, GiTrophy } from 'react-icons/gi';
 import { MdPlayCircle, MdSchedule } from 'react-icons/md';
 
@@ -63,6 +64,8 @@ export default function Home() {
       />
 
       {!loading && nextRace && <FeaturedRace race={nextRace} />}
+
+      <HolderPerksTeaser />
 
       <RaceSection
         title="Live Races"

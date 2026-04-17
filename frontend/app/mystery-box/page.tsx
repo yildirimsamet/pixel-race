@@ -7,6 +7,7 @@ import { User, HorseBuyResponse } from '@/types';
 import MysteryBox from '@/components/MysteryBox';
 import Loader from '@/components/Loader';
 import LoginPrompt from '@/components/LoginPrompt';
+import LockedTier4Card from '@/components/token/LockedTier4Card';
 import { MdCardGiftcard } from 'react-icons/md';
 import { FaWallet } from 'react-icons/fa';
 import { SiSolana } from 'react-icons/si';
@@ -178,7 +179,7 @@ export default function MysteryBoxPage() {
             className="max-w-2xl mx-auto"
           />
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-6">
             {[1, 2, 3].map((level, index) => (
               <motion.div
                 key={level}
@@ -197,6 +198,7 @@ export default function MysteryBoxPage() {
                 />
               </motion.div>
             ))}
+            <LockedTier4Card />
           </div>
         )}
 
